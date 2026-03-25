@@ -10,7 +10,7 @@
 
 2. VSCode에서 프로젝트 열기  
 VSCode에서 `CAPSTONE_TEAM_PROJECT` 리포지토리 폴더를 엽니다.  
-상단 메뉴의 [터미널] - [새 터미널]을 열고, 터미널 창에 `cd src`를 입력하여 소스 폴더로 진입합니다.  
+상단 메뉴의 [ 터미널 ] - [ 새 터미널 ]을 엽니다.
 <br><br>
 
 
@@ -31,4 +31,4 @@ VSCode에서 `CAPSTONE_TEAM_PROJECT` 리포지토리 폴더를 엽니다.
 
 5. 필수 패키지 다운로드
 터미널 입력창 맨 앞에 초록색으로 (venv) 가 떴는지 확인합니다! (이게 떠 있어야 가상환경에 성공적으로 들어온 것입니다.)
-가상환경에 들어왔다면, `pip install -r requirements.txt`를 입력해 프로젝트에 필요한 모든 패키지를 한 번에 설치합니다.
+가상환경에 들어왔다면, `python -m pip install -r requirements.txt`를 입력해 프로젝트에 필요한 모든 패키지를 한 번에 설치합니다.
