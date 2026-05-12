@@ -247,24 +247,6 @@ python src/main.py
 
 ![Blueprint](src/asset/Blueprint.jpg)
 
----
-
-## ✅ 기획서 ↔ README 일치 검토 결과
-
-| 항목 | 기획서 명시 | 현 README 반영 | 비고 |
-|------|-------------|----------------|------|
-| 디렉토리 정책 (`/main /backend /frontend /ai /docs`) | ✔ | ✔ | `docs` → 기존 `doc` 그대로 유지 |
-| 역할 분담 (PM·Backend·AI·Frontend) | ✔ | ✔ | 기획서 최신 버전 반영 |
-| 멀티모달 = Gemini Vision | ✔ | ✔ | 현재 `src/main.py`는 GPT-4o로 PoC 중 → Gemini 이식 필요 |
-| Light LLM = Gemma 4 E2B | ✔ | ✔ | 라파 5 + INT4 환경 |
-| DB = AWS RDS (MySQL) | ✔ (회의록 02) | ✔ | 로컬 SQLite 언급 제거 |
-| 3-카테고리 1일 / 30일 / 6개월 | ✔ | ✔ | — |
-| 정량 목표 (85% / 10s / 30% / 1학기말) | ✔ | ✔ | — |
-| 14주 Gantt 일정 | ✔ | ✔ | — |
-| 라즈베리파이 5 + USB 카메라 | ✔ | ✔ | 기존 README는 일반 Pi Camera만 명시 → 보정 완료 |
-| 데이터셋 3종 (COCO / Roboflow / Fresh-vs-Rotten) | ✔ | ✔ | — |
-
-> 차이점: 현재 코드(`src/main.py`)는 OpenAI GPT-4o 기반 PoC. 기획서 기준 메인 추론은 **Gemini Vision**이므로, 통합 단계(P2 후반 ~ P3)에 Gemini로 마이그레이션 예정.
 
 ---
 
