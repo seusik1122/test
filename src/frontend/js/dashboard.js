@@ -2,6 +2,9 @@
 const USE_MOCK = true;      // 백엔드 연동 시 false 로 변경
 const AUTO_REFRESH_MS = 30000;  // 30초마다 자동 갱신 (0이면 비활성)
 
+// ── 현재 표시 중인 항목 (처리 버튼에서 참조) ─────────────────────────────────
+let _currentItems = [];
+
 // ── 유틸 ─────────────────────────────────────────────────────────────────────
 function calcDday(expiresAt) {
   const diff = new Date(expiresAt) - new Date();
@@ -68,11 +71,11 @@ function renderTable(items) {
   const tbody = document.getElementById('items-tbody');
 
   if (!items) {
-    tbody.innerHTML = '<tr><td colspan="8" class="empty">데이터를 불러오지 못했습니다. 백엔드 서버를 확인하세요.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="9" class="empty">데이터를 불러오지 못했습니다. 백엔드 서버를 확인하세요.</td></tr>';
     return;
   }
   if (items.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="8" class="empty">분실물이 없습니다.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="9" class="empty">분실물이 없습니다.</td></tr>';
     return;
   }
 
@@ -92,8 +95,40 @@ function renderTable(items) {
         <td>${ddayCell(dday)}</td>
         <td>${statusCell(dday)}</td>
         <td>${thumb}</td>
+        <td><button class="btn btn-danger btn-process" data-id="${item.id}">처리</button></td>
       </tr>`;
   }).join('');
+}
+
+// ── AR 사이드바 통계 업데이트 ────────────────────────────────────────────────
+function updateARSidebar(items) {
+  const cats = [
+    { key: 'food',      label: '음식물' },
+    { key: 'nonfood',   label: '비음식물' },
+    { key: 'valuables', label: '고가품' },
+  ];
+
+  let allTotal = 0, allExpired = 0;
+
+  cats.forEach(({ key, label }) => {
+    const subset  = items.filter(i => i.category === label);
+    const expired = subset.filter(i => calcDday(i.expires_at) < 0).length;
+
+    document.getElementById(`stat-${key}-total`).textContent   = subset.length;
+
+    const expiredCell = document.getElementById(`stat-${key}-expired`);
+    expiredCell.textContent = expired;
+    expiredCell.className   = expired > 0 ? 'stat-expired' : '';
+
+    allTotal   += subset.length;
+    allExpired += expired;
+  });
+
+  document.getElementById('stat-all-total').textContent = allTotal;
+
+  const allExpiredCell = document.getElementById('stat-all-expired');
+  allExpiredCell.textContent = allExpired;
+  allExpiredCell.className   = allExpired > 0 ? 'stat-expired' : '';
 }
 
 // ── AR 마스킹 업데이트 ───────────────────────────────────────────────────────
@@ -125,9 +160,10 @@ async function refresh() {
   const category = document.getElementById('filter-category').value;
   const items    = await loadItems(category);
 
+  if (items) _currentItems = items;
   if (items) updateSummaryCards(items);
   renderTable(items);
-  if (items) updateAR(items);
+  if (items) { updateAR(items); updateARSidebar(items); }
 
   document.getElementById('last-updated').textContent =
     '마지막 갱신: ' + new Date().toLocaleTimeString('ko-KR');
@@ -137,6 +173,20 @@ async function refresh() {
 document.getElementById('btn-refresh').addEventListener('click', refresh);
 document.getElementById('btn-refresh-ar').addEventListener('click', refresh);
 document.getElementById('filter-category').addEventListener('change', refresh);
+
+document.getElementById('items-tbody').addEventListener('click', (e) => {
+  const btn = e.target.closest('.btn-process');
+  if (!btn) return;
+  const id   = Number(btn.dataset.id);
+  const item = _currentItems.find(i => i.id === id);
+  if (!item) return;
+  if (!confirm(`"${item.name}" 항목을 처리(폐기)하시겠습니까?`)) return;
+  _currentItems = _currentItems.filter(i => i.id !== id);
+  renderTable(_currentItems);
+  updateSummaryCards(_currentItems);
+  updateAR(_currentItems);
+  updateARSidebar(_currentItems);
+});
 
 // ── 초기 실행 ────────────────────────────────────────────────────────────────
 refresh();
