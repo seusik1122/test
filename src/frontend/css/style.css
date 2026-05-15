@@ -78,6 +78,66 @@ main {
 .ar-section h2 { margin-bottom: 6px; }
 .ar-hint { font-size: 0.82rem; color: #888; margin-bottom: 12px; }
 
+/* ── AR body: viewer + sidebar side-by-side ── */
+.ar-body {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+@media (max-width: 780px) {
+  .ar-body { flex-direction: column; }
+}
+
+/* ── AR Sidebar ── */
+.ar-sidebar {
+  flex: 0 0 210px;
+  background: #f8f9fb;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 14px;
+}
+
+.ar-sidebar h3 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #444;
+  margin-bottom: 10px;
+}
+
+.stats-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+}
+
+.stats-table th {
+  text-align: center;
+  color: #666;
+  font-weight: 600;
+  padding: 4px 6px;
+  border-bottom: 1px solid #ddd;
+}
+
+.stats-table td {
+  text-align: center;
+  padding: 6px 6px;
+  border-bottom: 1px solid #f0f0f0;
+  white-space: nowrap;
+}
+
+.stats-table td:first-child { text-align: left; }
+
+.stats-table tr:last-child td { border-bottom: none; }
+
+.stats-total-row td {
+  font-weight: 700;
+  border-top: 1px solid #ddd;
+  padding-top: 8px;
+}
+
+.stat-expired { color: #e74c3c; font-weight: 700; }
+
 .canvas-wrapper {
   position: relative;
   display: inline-block;
@@ -142,6 +202,9 @@ select, .btn {
 }
 
 .btn:hover { background: #2e2e4e; }
+
+.btn-danger              { background: #e74c3c; border-color: #e74c3c; }
+.btn-danger:hover        { background: #c0392b; }
 
 .table-wrapper {
   overflow-x: auto;

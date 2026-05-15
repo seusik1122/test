@@ -37,9 +37,45 @@
     <section class="ar-section">
       <h2>AR 마스킹 뷰어</h2>
       <p class="ar-hint">폐기 기한이 지난 항목은 빨간색으로 표시됩니다.</p>
-      <div class="canvas-wrapper">
-        <img id="camera-snapshot" src="" alt="카메라 스냅샷" />
-        <canvas id="ar-canvas"></canvas>
+      <div class="ar-body">
+        <div class="canvas-wrapper">
+          <img id="camera-snapshot" src="" alt="카메라 스냅샷" />
+          <canvas id="ar-canvas"></canvas>
+        </div>
+        <aside class="ar-sidebar">
+          <h3>카테고리별 현황</h3>
+          <table class="stats-table">
+            <thead>
+              <tr>
+                <th>카테고리</th>
+                <th>전체</th>
+                <th>폐기 필요</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="badge badge-food">음식물</span></td>
+                <td id="stat-food-total">0</td>
+                <td id="stat-food-expired">0</td>
+              </tr>
+              <tr>
+                <td><span class="badge badge-nonfood">비음식물</span></td>
+                <td id="stat-nonfood-total">0</td>
+                <td id="stat-nonfood-expired">0</td>
+              </tr>
+              <tr>
+                <td><span class="badge badge-valuables">고가품</span></td>
+                <td id="stat-valuables-total">0</td>
+                <td id="stat-valuables-expired">0</td>
+              </tr>
+              <tr class="stats-total-row">
+                <td>합계</td>
+                <td id="stat-all-total">0</td>
+                <td id="stat-all-expired">0</td>
+              </tr>
+            </tbody>
+          </table>
+        </aside>
       </div>
       <button id="btn-refresh-ar" class="btn">AR 새로고침</button>
     </section>
@@ -71,11 +107,12 @@
               <th>D-Day</th>
               <th>상태</th>
               <th>이미지</th>
+              <th>처리</th>
             </tr>
           </thead>
           <tbody id="items-tbody">
             <tr>
-              <td colspan="8" class="loading">데이터 불러오는 중...</td>
+              <td colspan="9" class="loading">데이터 불러오는 중...</td>
             </tr>
           </tbody>
         </table>
