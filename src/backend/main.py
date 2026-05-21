@@ -1,10 +1,18 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import firebase_admin
 from firebase_admin import credentials, firestore
 from datetime import datetime, timedelta
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Firebase 연결
 if not firebase_admin._apps:
@@ -84,6 +92,10 @@ def get_items():
     for doc in docs:
         item = doc.to_dict()
         item["id"] = doc.id
+        if hasattr(item.get("found_at"), "isoformat"):
+            item["found_at"] = item["found_at"].isoformat()
+        if hasattr(item.get("dispose_at"), "isoformat"):
+            item["dispose_at"] = item["dispose_at"].isoformat()
         result.append(item)
 
     return result
